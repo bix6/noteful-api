@@ -31,7 +31,7 @@ Boilerplate for starting new Express Projects
 - Create service objects
     - Create `objectName-endpoints.spec.js` and `objectName.fixtures.js` for tests
         - Create an initial test that fails
-    - Create folder like `src/articles` to hold `articles-router.js` and `articles-service.js`
+    - Create folder like `src/folders` to hold `folders-router.js` and `folders-service.js`
     - Wire up router to respond to the initial test and modify `app.js` to use the router
         - Make the router pass the test
     - Wire up the service object and call it from the router
@@ -40,8 +40,7 @@ Boilerplate for starting new Express Projects
 
 
 
-8. Delete `example-router` and `example-store` if not needed
-9. Update `README.md`
+- Update `README.md`
 
 ## Scripts
 - `npm start`
