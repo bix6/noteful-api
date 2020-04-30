@@ -28,6 +28,15 @@ Boilerplate for starting new Express Projects
     - Update `seeds`
     - Change to db in psql with `\c dbname`
     - Run seed file `\i C:/Path/To/File/seeds/seed.db.sql`
+- Create service objects
+    - Create `objectName-endpoints.spec.js` and `objectName.fixtures.js` for tests
+        - Create an initial test that fails
+    - Create folder like `src/articles` to hold `articles-router.js` and `articles-service.js`
+    - Wire up router to respond to the initial test and modify `app.js` to use the router
+        - Make the router pass the test
+    - Wire up the service object and call it from the router
+        - Make the test pass
+    - Start the app, make sure `server.js` adds knex to the app and query the first endpoint to ensure it works
 
 
 
