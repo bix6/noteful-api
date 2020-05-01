@@ -7,6 +7,7 @@ const { NODE_ENV } = require('./config');
 const validateBearerToken = require('./validate-bearer-token');
 const errorHandler = require('./error-handler');
 const foldersRouter = require('./folders/folders-router');
+const notesRouter = require('./notes/notes-router');
 
 // const logger = require('./logger');
 // const exampleRouter = require('./example-router/example-router');
@@ -23,12 +24,11 @@ app.use(cors());
 
 
 app.use('/api/folders', foldersRouter);
+app.use('/api/notes', notesRouter);
 
 app.get('/', (req, res) => {
     res.send('Hello, Jello!');
 });
-
-// app.use(exampleRouter);
 
 app.use(errorHandler);
 

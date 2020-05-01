@@ -29,7 +29,7 @@ Boilerplate for starting new Express Projects
     - Change to db in psql with `\c dbname`
     - Run seed file `\i C:/Path/To/File/seeds/seed.db.sql`
 - Create service objects
-    - Create `objectName-endpoints.spec.js` and `objectName.fixtures.js` for tests
+    - Create `folders-endpoints.spec.js` and `folders.fixtures.js` for tests
         - Create an initial test that fails
     - Create folder like `src/folders` to hold `folders-router.js` and `folders-service.js`
     - Wire up router to respond to the initial test and modify `app.js` to use the router

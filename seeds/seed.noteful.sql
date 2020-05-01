@@ -13,7 +13,7 @@ VALUES
     ('Trappers Trap Tortoises', 2, 'Run as fast as you can'),
     ('Diamonds', 2, 'Are forever'),
     ('Golden', 3, 'Everything is golden'),
-    ('GOLD', 3, 'I''m a king'),
+    ('GOLD', 3, 'I''m a tring'),
     ('KING', 3, 'KUNTA');
 
 COMMIT;
