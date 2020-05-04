@@ -67,7 +67,7 @@ describe('Folders Endpoint', function() {
                     });
             })
 
-            it('responds with 200 and notes with folderId', () => {
+            it('responds with 200 and notes with matching folderId', () => {
                 this.retries(3);
                 const folderId = 1;
                 const expectedNotes = testNotes.filter(note => note.folderid === folderId);
