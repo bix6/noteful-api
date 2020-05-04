@@ -89,4 +89,26 @@ describe('Folders Endpoint', function() {
             })
         })
     })
+
+    describe.only('POST /api/folders', () => {
+        const newFolder = { "name": "test folder" };
+
+        it('insert folder, responds with 201 and id', () => {
+            return supertest(app)
+                .post('/api/folders')
+                .send(newFolder)
+                .expect(201)
+                .expect(res => {
+                    expect(res.body).to.have.property('id');
+                    expect(res.body.name).to.eql(newFolder.name);
+                })
+        })
+
+        it('responds with 400 when required fields are missing', () => {
+            return supertest(app)
+                .post('/api/folders')
+                .send()
+                .expect(400, { error: { message: 'Missing name in request body' } })
+        })
+    })
 })

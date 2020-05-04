@@ -122,7 +122,7 @@ describe('Notes Endpoint', function() {
                     "content": "Test Content"
                 };
 
-                it.only('responds with 400 when required fields are missing', () => {
+                it('responds with 400 when required fields are missing', () => {
                     delete newNote[field];
 
                     return supertest(app)

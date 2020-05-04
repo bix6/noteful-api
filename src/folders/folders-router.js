@@ -28,6 +28,25 @@ foldersRouter
             })
             .catch(next)
     })
+    .post(jsonParser, (req, res, next) => {
+        const { name } = req.body;
+        const newFolder = { name };
+
+        if (newFolder.name == null) {
+            return res.status(400).json({
+                error: { message: `Missing name in request body` }
+            })
+        }
+
+        FoldersService.insertFolder(req.app.get('db'), sanitizeFolder(newFolder))
+            .then(folder => {
+                res
+                    .status(201)
+                    .location(path.posix.join(req.originalUrl, `/${folder.id}`))
+                    .json(sanitizeFolder(folder))
+            })
+            .catch(next);
+    })
 
 foldersRouter
     .route('/:folderId')

@@ -15,6 +15,13 @@ const FoldersService = {
         return knex('notes')
             .select('*')
             .where('folderid', folderId);
+    },
+
+    insertFolder(knex, folder) {
+        return knex('folders')
+            .insert(folder)
+            .returning('*')
+            .then(rows => rows[0]);
     }
 }
 
