@@ -76,5 +76,13 @@ foldersRouter
             })
             .catch(next);
     }) 
+    .delete((req, res, next) => {
+        FoldersService.deleteFolder(
+            req.app.get('db'),
+            res.folder.id    
+        )
+            .then(() => { res.status(204).end() })
+            .catch(next);
+    })
 
 module.exports = foldersRouter;

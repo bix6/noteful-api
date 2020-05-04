@@ -22,6 +22,12 @@ const FoldersService = {
             .insert(folder)
             .returning('*')
             .then(rows => rows[0]);
+    },
+
+    deleteFolder(knex, id) {
+        return knex('folders')
+            .delete()
+            .where({ id });
     }
 }
 

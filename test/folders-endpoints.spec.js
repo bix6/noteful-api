@@ -90,7 +90,7 @@ describe('Folders Endpoint', function() {
         })
     })
 
-    describe.only('POST /api/folders', () => {
+    describe('POST /api/folders', () => {
         const newFolder = { "name": "test folder" };
 
         it('insert folder, responds with 201 and id', () => {
@@ -109,6 +109,34 @@ describe('Folders Endpoint', function() {
                 .post('/api/folders')
                 .send()
                 .expect(400, { error: { message: 'Missing name in request body' } })
+        })
+    })
+
+    describe('DELETE /api/folders/:id', () => {
+        const testFolders = makeFoldersArray();
+        const testNotes = makeNotesArray();
+
+        beforeEach('insert folders and notes', () => {
+            return db('folders')
+                .insert(testFolders)
+                .then(() => {
+                    return db('notes')
+                        .insert(testNotes);
+                });
+        })
+
+        it('deletes folder, returns 204', () => {
+            const idToRemove = 1;
+            const expectedFolders = testFolders.filter(folder => folder.id != idToRemove)
+
+            return supertest(app)
+                .delete(`/api/folders/${idToRemove}`)
+                .expect(204)
+                .then(() => {
+                    return supertest(app)
+                        .get(`/api/folders`)
+                        .expect(expectedFolders)
+                })
         })
     })
 })

@@ -99,7 +99,7 @@ describe('Notes Endpoint', function() {
                     .expect(res => {
                         expect(res.body).to.have.property('id');
                         expect(res.body.name).to.eql(testNote.name);
-                        expect(res.body.folderid).to.eql(testNote.folderid);
+                        expect(Number(res.body.folderid)).to.eql(testNote.folderid);
                         expect(res.body.content).to.eql(testNote.content);
                         const expected = new Intl.DateTimeFormat('en-US').format(new Date());
                         const actual = new Intl.DateTimeFormat('en-US').format(new Date(res.body.modified));
@@ -107,7 +107,7 @@ describe('Notes Endpoint', function() {
                         expect(res.headers.location).to.eql(`/api/notes/${res.body.id}`)
                     })
                     .then(res => {
-                        supertest(app)
+                        return supertest(app)
                             .get(`/api/notes/${res.body.id}`)
                             .expect(res.body);
                     })
@@ -133,6 +133,44 @@ describe('Notes Endpoint', function() {
                         })
                 })
             })
+        })
+    })
+
+    describe('DELETE /api/notes/:id', () => {
+        const testFolders = makeFoldersArray();
+        const testNotes = makeNotesArray();
+
+        beforeEach('insert folders and notes', () => {
+            return db('folders')
+                .insert(testFolders)
+                .then(() => {
+                    return db('notes')
+                        .insert(testNotes);
+                });
+        })
+
+        it('deletes note, returns 204', () => {
+            const idToRemove = 2;
+            const expectedNotes = testNotes.filter(note => note.id !== idToRemove);
+
+            return supertest(app)
+                .delete(`/api/notes/${idToRemove}`)
+                .expect(204)
+                .then(() => {
+                    return supertest(app)
+                        .get(`/api/notes`)
+                        .expect(res => {
+                            expectedNotes.forEach((note, i) => {
+                                expect(res.body[i].id).to.eql(note.id);
+                                expect(res.body[i].name).to.eql(note.name);
+                                expect(Number(res.body[i].folderid)).to.eql(note.folderid);
+                                expect(res.body[i].content).to.eql(note.content);
+                                const expected = new Intl.DateTimeFormat('en-US').format(new Date(note.modified));
+                                const actual = new Intl.DateTimeFormat('en-US').format(new Date(res.body[i].modified));
+                                expect(expected).to.eql(actual);
+                            })
+                        });
+                })
         })
     })
 })

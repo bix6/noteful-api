@@ -43,7 +43,7 @@ function makeNote() {
         id: 6,
         name: "Lamination Station",
         modified: new Date(),
-        folderid: "1",
+        folderid: 1,
         content: "Welcome to the Station of Devastation"
     }
 }
