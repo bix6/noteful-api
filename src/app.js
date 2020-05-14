@@ -9,9 +9,6 @@ const errorHandler = require('./error-handler');
 const foldersRouter = require('./folders/folders-router');
 const notesRouter = require('./notes/notes-router');
 
-// const logger = require('./logger');
-// const exampleRouter = require('./example-router/example-router');
-
 const app = express();
 
 const morganOption = (NODE_ENV === 'production')
@@ -20,7 +17,7 @@ const morganOption = (NODE_ENV === 'production')
 app.use(morgan(morganOption));
 app.use(helmet());
 app.use(cors());
-// app.use(validateBearerToken);
+app.use(validateBearerToken);
 
 
 app.use('/api/folders', foldersRouter);

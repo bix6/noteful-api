@@ -9,7 +9,7 @@ describe('Notes Endpoint', function() {
     before('make knex instance', () => {
         db = knex({
             client: 'pg',
-            connection: process.env.TEST_DB_URL,
+            connection: process.env.TEST_DATABASE_URL,
         });
         app.set('db', db);
     })
@@ -25,6 +25,7 @@ describe('Notes Endpoint', function() {
             it ('responds with 200 and an empty list', () => {
                 return supertest(app)
                     .get('/api/notes')
+                    .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                     .expect(200, []);
             })
         })
@@ -45,6 +46,7 @@ describe('Notes Endpoint', function() {
             it('responds with 200 and all notes', () => {
                 return supertest(app)
                     .get('/api/notes/1')
+                    .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                     .expect(200);
             })
         })
@@ -70,6 +72,7 @@ describe('Notes Endpoint', function() {
                 
                 return supertest(app)
                     .get(`/api/notes/${noteId}`)
+                    .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                     .expect(200)
                     .expect(res => {
                         expect(res.body.id).to.eql(expectedNote.id);
@@ -95,6 +98,7 @@ describe('Notes Endpoint', function() {
                 return supertest(app)
                     .post('/api/notes')
                     .send(testNote)
+                    .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                     .expect(201)
                     .expect(res => {
                         expect(res.body).to.have.property('id');
@@ -109,6 +113,7 @@ describe('Notes Endpoint', function() {
                     .then(res => {
                         return supertest(app)
                             .get(`/api/notes/${res.body.id}`)
+                            .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                             .expect(res.body);
                     })
             })
@@ -128,6 +133,7 @@ describe('Notes Endpoint', function() {
                     return supertest(app)
                         .post('/api/notes')
                         .send(newNote)
+                        .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                         .expect(400, {
                             error: { message: `Missing ${field} in request body` }
                         })
@@ -155,10 +161,12 @@ describe('Notes Endpoint', function() {
 
             return supertest(app)
                 .delete(`/api/notes/${idToRemove}`)
+                .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                 .expect(204)
                 .then(() => {
                     return supertest(app)
                         .get(`/api/notes`)
+                        .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                         .expect(res => {
                             expectedNotes.forEach((note, i) => {
                                 expect(res.body[i].id).to.eql(note.id);

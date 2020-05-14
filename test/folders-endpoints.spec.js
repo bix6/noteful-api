@@ -9,7 +9,7 @@ describe('Folders Endpoint', function() {
     before('make knex instance', () => {
         db = knex({
             client: 'pg',
-            connection: process.env.TEST_DB_URL,
+            connection: process.env.TEST_DATABASE_URL,
         });
         app.set('db', db);
     })
@@ -25,6 +25,7 @@ describe('Folders Endpoint', function() {
             it ('responds with 200 and an empty list', () => {
                 return supertest(app)
                     .get('/api/folders')
+                    .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                     .expect(200, []);
             })
         })
@@ -39,6 +40,7 @@ describe('Folders Endpoint', function() {
             it('responds with 200 and all folders', () => {
                 return supertest(app)
                     .get('/api/folders')
+                    .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                     .expect(200);
             })
         })
@@ -50,6 +52,7 @@ describe('Folders Endpoint', function() {
                 const folderId = 1111;
                 return supertest(app)
                     .get(`/api/folders/${folderId}`)
+                    .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                     .expect(404, { error: { message: `Folder does not exist` } })
             })
         })
@@ -74,6 +77,7 @@ describe('Folders Endpoint', function() {
 
                 return supertest(app)
                     .get(`/api/folders/${folderId}`)
+                    .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                     .expect(200)
                     .expect(res => {
                         for (let i = 0; i < res.body.length; i++) {
@@ -97,6 +101,7 @@ describe('Folders Endpoint', function() {
             return supertest(app)
                 .post('/api/folders')
                 .send(newFolder)
+                .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                 .expect(201)
                 .expect(res => {
                     expect(res.body).to.have.property('id');
@@ -108,6 +113,7 @@ describe('Folders Endpoint', function() {
             return supertest(app)
                 .post('/api/folders')
                 .send()
+                .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                 .expect(400, { error: { message: 'Missing name in request body' } })
         })
     })
@@ -131,10 +137,12 @@ describe('Folders Endpoint', function() {
 
             return supertest(app)
                 .delete(`/api/folders/${idToRemove}`)
+                .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                 .expect(204)
                 .then(() => {
                     return supertest(app)
                         .get(`/api/folders`)
+                        .set('Authorization', `Bearer ${process.env.API_TOKEN}`)
                         .expect(expectedFolders)
                 })
         })
